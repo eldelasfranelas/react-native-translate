@@ -1,25 +1,22 @@
+/**
+ * React Native Translate forked from https://github.com/maximromanyuk/react-native-translate
+ * Now supporting translate for nested objects
+ */
+
 import React from 'react';
 import { Text } from 'react-native';
 
-let _localization = {};
+export let _localization = {};
 
 export function setLocalization(localization) {
-	if(_localization!= undefined){
-		_localization = localization;	
-	}
-    
+  _localization = localization;
 }
 
 export function translate(value) {
-	if(!_localization.hasOwnProperty(value))
-      {
-          return value;
-      }
-      else {
-          return _localization[value];
-      }
+  const splitText = value.split('.');
+  return splitText.length > 1
+    ? _localization[splitText[0]][splitText[1]]
+    : _localization[value];
 }
 
-export const Translate = ({ value }) => (
-    <Text>{translate(value)}</Text>
-);
+export const Translate = ({ value }) => <Text>{translate(value)}</Text>;
